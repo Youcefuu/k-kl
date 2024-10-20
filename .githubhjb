@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rayen Shop</title>
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <style>
+        body {
+            background-color: black;
+            color: red;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 50px;
+        }
+        h1 {
+            font-size: 50px;
+        }
+        .product {
+            margin: 20px;
+            font-size: 20px;
+            color: white;
+        }
+        .price {
+            font-size: 30px;
+            color: yellow;
+        }
+        .shipping {
+            font-size: 18px;
+            color: white;
+        }
+        input {
+            margin: 10px;
+            padding: 5px;
+            width: 200px;
+        }
+        .payment {
+            margin-top: 30px;
+            color: yellow;
+            cursor: pointer;
+            padding: 10px 20px;
+            background-color: red;
+            border: none;
+            color: white;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Rayen Shop</h1>
+    <div class="product">
+        <p>Skull Cap Syna World</p>
+        <p class="price">Prezzo: €5</p>
+        <p class="shipping">Spedizione: €0.99 (consegna in 10 giorni)</p>
+        
+        <h3>Inserisci i tuoi dati per la spedizione:</h3>
+        <input type="text" id="nome" placeholder="Nome" required>
+        <input type="text" id="cognome" placeholder="Cognome" required>
+        <input type="text" id="indirizzo" placeholder="Indirizzo" required>
+        <input type="text" id="citta" placeholder="Città" required>
+        
+        <button class="payment" onclick="pay()">Pagamento con PayPal</button>
+    </div>
+
+    <script>
+        (function() {
+            emailjs.init("YOUR_USER_ID"); // Sostituisci con il tuo User ID di EmailJS
+        })();
+
+        function pay() {
+            const nome = document.getElementById('nome').value;
+            const cognome = document.getElementById('cognome').value;
+            const indirizzo = document.getElementById('indirizzo').value;
+            const citta = document.getElementById('citta').value;
+
+            if (nome && cognome && indirizzo && citta) {
+                // Invia email
+                const templateParams = {
+                    from_name: nome,
+                    to_name: 'Serhaneyoucef726',
+                    message: `Nuovo ordine:\nNome: ${nome}\nCognome: ${cognome}\nIndirizzo: ${indirizzo}\nCittà: ${citta}`,
+                };
+
+                emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)
+                    .then(() => {
+                        // Reindirizza a PayPal
+                        const url = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=serhaneyoucef726@gmail.com&item_name=Skull+Cap+Syna+World&amount=5&currency_code=EUR`;
+                        window.location.href = url;
+                    }, (error) => {
+                        alert('Errore nell\'invio dell\'email: ' + JSON.stringify(error));
+                    });
+            } else {
+                alert("Per favore, compila tutti i campi.");
+            }
+        }
+    </script>
+</body>
+</html>
